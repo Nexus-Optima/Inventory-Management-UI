@@ -11,10 +11,11 @@ const Sidebar = ({ clickedIcon, setClickedIcon }) => {
       xs={2}
       style={{
         position: 'fixed',
-        top: '20px',
+        top: '1vh',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
+        padding: '1% 0',
       }}
     >
       <Typography
@@ -22,14 +23,14 @@ const Sidebar = ({ clickedIcon, setClickedIcon }) => {
         style={{
           color: 'black',
           padding: '0 2% 20% 20%',
-          marginRight: '60px',
-          fontSize: '15px',
+          marginRight: '4vw',
+          fontSize: '1.2vw',
         }}
       >
         ABC Symbol
       </Typography>
 
-      <Box style={{ paddingLeft: '20px', paddingBottom: '40%' }}>
+      <Box style={{ paddingLeft: '2vw', paddingBottom: '4vh' }}>
         <Button
           onClick={() => setClickedIcon('summary')}
           style={{
@@ -37,18 +38,18 @@ const Sidebar = ({ clickedIcon, setClickedIcon }) => {
             alignItems: 'center',
             flexDirection: 'column',
             justifyContent: 'flex-start',
-            padding: '12px',
+            padding: '1.2vw',
             width: '60%',
             textTransform: 'none',
-            fontSize: '15px',
+            fontSize: '1.2vw',
             color: 'black',
             backgroundColor: 'transparent',
-            border: clickedIcon === 'summary' ? '2px solid black' : 'none',
+            border: clickedIcon === 'summary' ? '0.2vw solid black' : 'none',
           }}
         >
           <SummarizeIcon
             sx={{
-              fontSize: '40px',
+              fontSize: '3vw',
             }}
           />
           Summary
@@ -63,14 +64,14 @@ const Sidebar = ({ clickedIcon, setClickedIcon }) => {
             justifyContent: 'flex-start',
             width: '60%',
             textTransform: 'none',
-            fontSize: '15px',
+            fontSize: '1.2vw',
             backgroundColor: 'transparent',
-            border: clickedIcon === 'action_plan' ? '2px solid black' : 'none',
+            border: clickedIcon === 'action_plan' ? '0.2vw solid black' : 'none',
           }}
         >
           <ContentPasteSearchIcon
             sx={{
-              fontSize: '40px',
+              fontSize: '3vw',
             }}
           />
           Action Plan
@@ -85,20 +86,20 @@ const Sidebar = ({ clickedIcon, setClickedIcon }) => {
             justifyContent: 'flex-start',
             width: '60%',
             textTransform: 'none',
-            fontSize: '15px',
+            fontSize: '1.2vw',
             backgroundColor: 'transparent',
-            border: clickedIcon === 'current_levels' ? '2px solid black' : 'none',
+            border: clickedIcon === 'current_levels' ? '0.2vw solid black' : 'none',
           }}
         >
           <ContentPasteSearchIcon
             sx={{
-              fontSize: '40px',
+              fontSize: '3vw',
             }}
           />
           Current Levels
         </Button>
       </Box>
-      <Box sx={{ paddingLeft: '20px', paddingTop: '80px' }}>
+      <Box sx={{ paddingLeft: '2vw', paddingTop: '8vh' }}>
         <Button
           onClick={() => setClickedIcon('help')}
           style={{
@@ -107,17 +108,17 @@ const Sidebar = ({ clickedIcon, setClickedIcon }) => {
             alignItems: 'center',
             flexDirection: 'column',
             justifyContent: 'flex-start',
-            padding: '12px 0',
+            padding: '1.2vw 0',
             width: '60%',
             textTransform: 'none',
-            fontSize: '15px',
+            fontSize: '1.2vw',
             backgroundColor: 'transparent',
-            border: clickedIcon === 'help' ? '2px solid black' : 'none',
+            border: clickedIcon === 'help' ? '0.2vw solid black' : 'none',
           }}
         >
           <HelpOutlineIcon
             sx={{
-              fontSize: '40px',
+              fontSize: '3vw',
             }}
           />
           Help

@@ -13,7 +13,7 @@ import {
 const CurrentLevels = () => (
   <Container
     maxWidth={false}
-    style={{ marginLeft: "130px", paddingRight: "20px" }}
+    style={{ marginLeft: "10%", paddingRight: "2%" }}
   >
     <Grid container>
       <Grid item xs={12}>
@@ -21,8 +21,8 @@ const CurrentLevels = () => (
           <Grid item xs={11} style={{ padding: "5% 0 0 5%" }}>
             <TableContainer
               style={{
-                marginBottom: "20px",
-                marginTop: "30px",
+                marginBottom: "2%",
+                marginTop: "3%",
                 overflowX: "auto",
               }}
             >
@@ -35,7 +35,7 @@ const CurrentLevels = () => (
               >
                 <TableHead>
                   <TableRow>
-                    <TableCell colSpan={8} style={{ fontWeight: "bold",backgroundColor:"#F0F0F0" }}>
+                    <TableCell colSpan={8} style={{ fontWeight: "bold", backgroundColor:"#F0F0F0" }}>
                       Current Levels
                     </TableCell>
                   </TableRow>
@@ -78,46 +78,6 @@ const CurrentLevels = () => (
                       currentStock: "20 Units",
                       currentStockLevel: "Understock",
                     },
-                    {
-                      materialCode: "RM0023",
-                      materialName: "Vinyl Acetate",
-                      minimumStock: "32 Units",
-                      reIndentStock: "36 Units",
-                      reorderStock: "40 Units",
-                      maximumStock: "44 Units",
-                      currentStock: "20 Units",
-                      currentStockLevel: "Understock",
-                    },
-                    {
-                      materialCode: "RM0023",
-                      materialName: "Vinyl Acetate",
-                      minimumStock: "32 Units",
-                      reIndentStock: "36 Units",
-                      reorderStock: "40 Units",
-                      maximumStock: "44 Units",
-                      currentStock: "20 Units",
-                      currentStockLevel: "Understock",
-                    },
-                    {
-                      materialCode: "RM0023",
-                      materialName: "Vinyl Acetate",
-                      minimumStock: "32 Units",
-                      reIndentStock: "36 Units",
-                      reorderStock: "40 Units",
-                      maximumStock: "44 Units",
-                      currentStock: "20 Units",
-                      currentStockLevel: "Understock",
-                    },
-                    {
-                      materialCode: "RM0023",
-                      materialName: "Vinyl Acetate",
-                      minimumStock: "32 Units",
-                      reIndentStock: "36 Units",
-                      reorderStock: "40 Units",
-                      maximumStock: "44 Units",
-                      currentStock: "20 Units",
-                      currentStockLevel: "Understock",
-                    },
                   ].map((row, index) => (
                     <TableRow
                       key={index}
@@ -126,28 +86,28 @@ const CurrentLevels = () => (
                           index % 2 === 0 ? "#F0F0F0" : "#D3D3D3",
                       }}
                     >
-                      <TableCell style={{ padding: "10px" }}>
+                      <TableCell style={{ padding: "1.5vw" }}>
                         {row.materialCode}
                       </TableCell>
-                      <TableCell style={{ padding: "10px" }}>
+                      <TableCell style={{ padding: "1.5vw" }}>
                         {row.materialName}
                       </TableCell>
-                      <TableCell style={{ padding: "10px" }}>
+                      <TableCell style={{ padding: "1.5vw" }}>
                         {row.minimumStock}
                       </TableCell>
-                      <TableCell style={{ padding: "10px" }}>
+                      <TableCell style={{ padding: "1.5vw" }}>
                         {row.reIndentStock}
                       </TableCell>
-                      <TableCell style={{ padding: "10px" }}>
+                      <TableCell style={{ padding: "1.5vw" }}>
                         {row.reorderStock}
                       </TableCell>
-                      <TableCell style={{ padding: "10px" }}>
+                      <TableCell style={{ padding: "1.5vw" }}>
                         {row.maximumStock}
                       </TableCell>
-                      <TableCell style={{ padding: "10px" }}>
+                      <TableCell style={{ padding: "1.5vw" }}>
                         {row.currentStock}
                       </TableCell>
-                      <TableCell style={{ padding: "10px" }}>
+                      <TableCell style={{ padding: "1.5vw" }}>
                         {row.currentStockLevel}
                       </TableCell>
                     </TableRow>

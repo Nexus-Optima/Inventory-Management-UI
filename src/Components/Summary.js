@@ -28,14 +28,14 @@ const Summary = () => {
         return (
           <Container
             maxWidth={false}
-            style={{ marginLeft: "130px", paddingRight: "20px" }}
+            style={{ marginLeft: "10%", paddingRight: "2%" }}
           >
             <Grid container>
               <Grid item xs={12}>
                 <Grid container spacing={0}>
                   <Grid item xs={6} style={{ padding: "5% 0 0 2%" }}>
                     <TableContainer
-                      style={{ marginBottom: "20px", marginTop: "30px" }}
+                      style={{ marginBottom: "3%", marginTop: "5%" }}
                     >
                       <Table
                         style={{
@@ -60,7 +60,7 @@ const Summary = () => {
                                 style={{
                                   border: "2px solid black",
                                   width: "33.33%",
-                                  padding: "50px",
+                                  padding: "3rem",
                                   backgroundColor: "#D3D3D3",
                                 }}
                               >
@@ -70,7 +70,7 @@ const Summary = () => {
                                 style={{
                                   border: "2px solid black",
                                   width: "33.33%",
-                                  padding: "50px",
+                                  padding: "3rem",
                                   backgroundColor: "#D3D3D3",
                                 }}
                               >
@@ -80,7 +80,7 @@ const Summary = () => {
                                 style={{
                                   border: "2px solid black",
                                   width: "33.33%",
-                                  padding: "50px",
+                                  padding: "3rem",
                                   backgroundColor: "#D3D3D3",
                                 }}
                               >
@@ -92,7 +92,7 @@ const Summary = () => {
                                 style={{
                                   border: "2px solid black",
                                   width: "33.33%",
-                                  padding: "30px",
+                                  padding: "2rem",
                                   backgroundColor: "#D3D3D3",
                                 }}
                               >
@@ -102,7 +102,7 @@ const Summary = () => {
                                 style={{
                                   border: "2px solid black",
                                   width: "33.33%",
-                                  padding: "30px",
+                                  padding: "2rem",
                                   backgroundColor: "#D3D3D3",
                                 }}
                               >
@@ -112,7 +112,7 @@ const Summary = () => {
                                 style={{
                                   border: "2px solid black",
                                   width: "33.33%",
-                                  padding: "30px",
+                                  padding: "2rem",
                                   backgroundColor: "#D3D3D3",
                                 }}
                               >
@@ -154,7 +154,7 @@ const Summary = () => {
                                 style={{
                                   border: "2px solid black",
                                   width: "33.33%",
-                                  padding: "50px",
+                                  padding: "3rem",
                                   backgroundColor: "#D3D3D3",
                                 }}
                               >
@@ -164,7 +164,7 @@ const Summary = () => {
                                 style={{
                                   border: "2px solid black",
                                   width: "33.33%",
-                                  padding: "50px",
+                                  padding: "3rem",
                                   backgroundColor: "#D3D3D3",
                                 }}
                               >
@@ -174,7 +174,7 @@ const Summary = () => {
                                 style={{
                                   border: "2px solid black",
                                   width: "33.33%",
-                                  padding: "50px",
+                                  padding: "3rem",
                                   backgroundColor: "#D3D3D3",
                                 }}
                               >

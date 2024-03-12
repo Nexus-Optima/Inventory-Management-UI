@@ -13,7 +13,7 @@ import {
 const ActionPlan = () => (
   <Container
     maxWidth={false}
-    style={{ marginLeft: "130px", paddingRight: "20px" }}
+    style={{ marginLeft: "10%", paddingRight: "2%" }}
   >
     <Grid container>
       <Grid item xs={12}>
@@ -21,8 +21,8 @@ const ActionPlan = () => (
           <Grid item xs={11} style={{ padding: "5% 0 0 5%" }}>
             <TableContainer
               style={{
-                marginBottom: "20px",
-                marginTop: "30px",
+                marginBottom: "2%",
+                marginTop: "3%",
                 overflowX: "auto",
               }}
             >
@@ -107,38 +107,6 @@ const ActionPlan = () => (
                       priority: "High",
                       additionalInfo: "Indent No. Preferred Vendors",
                     },
-                    {
-                      materialCode: "RM0023",
-                      materialName: "Vinyl Acetate",
-                      currentStock: "Understock",
-                      actionItem: "Raise PO",
-                      priority: "High",
-                      additionalInfo: "Indent No. Preferred Vendors",
-                    },
-                    {
-                      materialCode: "RM0023",
-                      materialName: "Vinyl Acetate",
-                      currentStock: "Understock",
-                      actionItem: "Raise PO",
-                      priority: "High",
-                      additionalInfo: "Indent No. Preferred Vendors",
-                    },
-                    {
-                      materialCode: "RM0023",
-                      materialName: "Vinyl Acetate",
-                      currentStock: "Understock",
-                      actionItem: "Raise PO",
-                      priority: "High",
-                      additionalInfo: "Indent No. Preferred Vendors",
-                    },
-                    {
-                      materialCode: "RM0023",
-                      materialName: "Vinyl Acetate",
-                      currentStock: "Understock",
-                      actionItem: "Raise PO",
-                      priority: "High",
-                      additionalInfo: "Indent No. Preferred Vendors",
-                    },
                   ].map((row, index) => (
                     <TableRow
                       key={index}
@@ -147,22 +115,22 @@ const ActionPlan = () => (
                           index % 2 === 0 ? "#F0F0F0" : "#D3D3D3",
                       }}
                     >
-                      <TableCell style={{ padding: "10px" }}>
+                      <TableCell style={{ padding: "10" }}>
                         {row.materialCode}
                       </TableCell>
-                      <TableCell style={{ padding: "10px" }}>
+                      <TableCell style={{ padding: "10" }}>
                         {row.materialName}
                       </TableCell>
-                      <TableCell style={{ padding: "10px" }}>
+                      <TableCell style={{ padding: "10" }}>
                         {row.currentStock}
                       </TableCell>
-                      <TableCell style={{ padding: "10px" }}>
+                      <TableCell style={{ padding: "10" }}>
                         {row.actionItem}
                       </TableCell>
-                      <TableCell style={{ padding: "10px" }}>
+                      <TableCell style={{ padding: "10" }}>
                         {row.priority}
                       </TableCell>
-                      <TableCell style={{ padding: "10px" }}>
+                      <TableCell style={{ padding: "10" }}>
                         {row.additionalInfo}
                       </TableCell>
                     </TableRow>
