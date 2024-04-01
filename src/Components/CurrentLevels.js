@@ -10,11 +10,8 @@ import {
   TableRow,
 } from "@mui/material";
 
-const CurrentLevels = () => (
-  <Container
-    maxWidth={false}
-    style={{ marginLeft: "10%", paddingRight: "2%" }}
-  >
+const CurrentLevels = ({ currentLevelsData }) => (
+  <Container maxWidth={false} style={{ marginLeft: "10%", paddingRight: "2%" }}>
     <Grid container>
       <Grid item xs={12}>
         <Grid container spacing={0}>
@@ -35,7 +32,10 @@ const CurrentLevels = () => (
               >
                 <TableHead>
                   <TableRow>
-                    <TableCell colSpan={8} style={{ fontWeight: "bold", backgroundColor:"#F0F0F0" }}>
+                    <TableCell
+                      colSpan={8}
+                      style={{ fontWeight: "bold", backgroundColor: "#F0F0F0" }}
+                    >
                       Current Levels
                     </TableCell>
                   </TableRow>
@@ -67,18 +67,7 @@ const CurrentLevels = () => (
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {[
-                    {
-                      materialCode: "RM0023",
-                      materialName: "Vinyl Acetate",
-                      minimumStock: "32 Units",
-                      reIndentStock: "36 Units",
-                      reorderStock: "40 Units",
-                      maximumStock: "44 Units",
-                      currentStock: "20 Units",
-                      currentStockLevel: "Understock",
-                    },
-                  ].map((row, index) => (
+                  {currentLevelsData.map((row, index) => (
                     <TableRow
                       key={index}
                       style={{
@@ -87,28 +76,28 @@ const CurrentLevels = () => (
                       }}
                     >
                       <TableCell style={{ padding: "1.5vw" }}>
-                        {row.materialCode}
+                        {row["Item code"]}
                       </TableCell>
                       <TableCell style={{ padding: "1.5vw" }}>
-                        {row.materialName}
+                        {row["Item name"]}
                       </TableCell>
                       <TableCell style={{ padding: "1.5vw" }}>
-                        {row.minimumStock}
+                        {row["Minimum days"]}
                       </TableCell>
                       <TableCell style={{ padding: "1.5vw" }}>
-                        {row.reIndentStock}
+                        {row["Re indent days"]}
                       </TableCell>
                       <TableCell style={{ padding: "1.5vw" }}>
-                        {row.reorderStock}
+                        {row["Re order days"]}
                       </TableCell>
                       <TableCell style={{ padding: "1.5vw" }}>
-                        {row.maximumStock}
+                        {row["Maximum days"]}
                       </TableCell>
                       <TableCell style={{ padding: "1.5vw" }}>
-                        {row.currentStock}
+                        {row["Current Stock"]}
                       </TableCell>
                       <TableCell style={{ padding: "1.5vw" }}>
-                        {row.currentStockLevel}
+                        {row["Daily consumption"]}
                       </TableCell>
                     </TableRow>
                   ))}

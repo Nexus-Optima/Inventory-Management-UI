@@ -10,11 +10,8 @@ import {
   TableRow,
 } from "@mui/material";
 
-const ActionPlan = () => (
-  <Container
-    maxWidth={false}
-    style={{ marginLeft: "10%", paddingRight: "2%" }}
-  >
+const ActionPlan = ({ actionPlanData }) => (
+  <Container maxWidth={false} style={{ marginLeft: "10%", paddingRight: "2%" }}>
     <Grid container>
       <Grid item xs={12}>
         <Grid container spacing={0}>
@@ -98,16 +95,7 @@ const ActionPlan = () => (
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {[
-                    {
-                      materialCode: "RM0023",
-                      materialName: "Vinyl Acetate",
-                      currentStock: "Understock",
-                      actionItem: "Raise PO",
-                      priority: "High",
-                      additionalInfo: "Indent No. Preferred Vendors",
-                    },
-                  ].map((row, index) => (
+                  {actionPlanData.map((row, index) => (
                     <TableRow
                       key={index}
                       style={{
@@ -116,22 +104,22 @@ const ActionPlan = () => (
                       }}
                     >
                       <TableCell style={{ padding: "10" }}>
-                        {row.materialCode}
+                        {row["Item code"]}
                       </TableCell>
                       <TableCell style={{ padding: "10" }}>
-                        {row.materialName}
+                        {row["Item name"]}
                       </TableCell>
                       <TableCell style={{ padding: "10" }}>
-                        {row.currentStock}
+                        {row["Current Stock"]}
                       </TableCell>
                       <TableCell style={{ padding: "10" }}>
-                        {row.actionItem}
+                        {row["Action Plan"]}
                       </TableCell>
                       <TableCell style={{ padding: "10" }}>
-                        {row.priority}
+                        {row["Priority"]}
                       </TableCell>
                       <TableCell style={{ padding: "10" }}>
-                        {row.additionalInfo}
+                        {row["Additional Info"]}
                       </TableCell>
                     </TableRow>
                   ))}
