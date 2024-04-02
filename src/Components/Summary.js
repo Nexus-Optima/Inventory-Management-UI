@@ -9,11 +9,18 @@ import {
   TableHead,
   TableRow,
   Box,
+  Typography,
 } from "@mui/material";
 import Header from "../Utils/Header";
 import Sidebar from "../Utils/Sidebar";
 import ActionPlan from "./ActionPlan";
 import CurrentLevels from "./CurrentLevels";
+import {
+  initialPriorityColors,
+  initialStockColors,
+  priorityColors as importedPriorityColors,
+  stockColors as importedStockColors,
+} from "../constants";
 
 const Summary = () => {
   const [clickedIcon, setClickedIcon] = useState("summary");
@@ -31,26 +38,17 @@ const Summary = () => {
   });
   const [materialList, setMaterialList] = useState([]);
   const [itemsData, setItemsData] = useState([]);
-  const [priorityColors, setPriorityColors] = useState({
-    High: "#D3D3D3",
-    Medium: "#D3D3D3",
-    Low: "#D3D3D3",
-  });
-  const [stockColors, setStockColors] = useState({
-    Overstock: "#D3D3D3",
-    Critical: "#D3D3D3",
-    "To order": "#D3D3D3",
-    "To indent": "#D3D3D3",
-    Understock: "#D3D3D3",
-  });
+  const [priorityColors, setPriorityColors] = useState(initialPriorityColors);
+  const [stockColors, setStockColors] = useState(initialStockColors);
   const [actionPlanData, setActionPlanData] = useState([]);
   const [currentLevelsData, setCurrentLevelsData] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${process.env.REACT_APP_URL}?client_name=Abhilaksh Misra`
+          `${process.env.REACT_APP_URL}?client_name=Abhilaksh Misra` //TO DO
         );
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -62,7 +60,7 @@ const Summary = () => {
         setActionPlanData(data);
         setCurrentLevelsData(data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        setError("Error fetching data. Please try again later.");
       }
     };
     fetchData();
@@ -112,21 +110,11 @@ const Summary = () => {
     const materialNames = filteredItems.map((item) => item["Item name"]);
     setMaterialList(materialNames);
 
-    const priorityColorMap = {
-      High: { backgroundColor: "#FAC898" },
-      Medium: { backgroundColor: "#E97451" },
-      Low: { backgroundColor: "#FFE5B4" },
-    };
-
-    setPriorityColors((prevColors) => {
-      const updatedColors = {};
-      for (const key in prevColors) {
-        updatedColors[key] = priorityColorMap[key]
-          ? priorityColorMap[key].backgroundColor
-          : "#D3D3D3";
-      }
-      return updatedColors;
-    });
+    const newPriorityColors = {};
+    for (const key in initialPriorityColors) {
+      newPriorityColors[key] = importedPriorityColors[key];
+    }
+    setPriorityColors(newPriorityColors);
   };
 
   const handleStockCategoryClick = (category) => {
@@ -136,24 +124,13 @@ const Summary = () => {
     const materialNames = filteredItems.map((item) => item["Item name"]);
     setMaterialList(materialNames);
 
-    const categoryColorMap = {
-      Overstock: { backgroundColor: "#FAC898" },
-      Critical: { backgroundColor: "#FFE5B4" },
-      "To order": { backgroundColor: "#E97451" },
-      "To indent": { backgroundColor: "#FAC898" },
-      Understock: { backgroundColor: "#FFE5B4" },
-    };
-
-    setStockColors((prevColors) => {
-      const updatedColors = {};
-      for (const key in prevColors) {
-        updatedColors[key] = categoryColorMap[key]
-          ? categoryColorMap[key].backgroundColor
-          : "#D3D3D3";
-      }
-      return updatedColors;
-    });
+    const newStockColors = {};
+    for (const key in initialStockColors) {
+      newStockColors[key] = importedStockColors[key];
+    }
+    setStockColors(newStockColors);
   };
+
 
   const renderContent = () => {
     switch (clickedIcon) {
@@ -202,7 +179,8 @@ const Summary = () => {
                                     style={{
                                       border: "2px solid black",
                                       width: `${percentage}%`,
-                                      backgroundColor: stockColors[category],
+                                      backgroundColor:
+                                        stockColors[category],
                                       fontWeight: "bold",
                                     }}
                                     onClick={() =>
@@ -250,7 +228,8 @@ const Summary = () => {
                                     style={{
                                       border: "2px solid black",
                                       width: `${percentage}%`,
-                                      backgroundColor: priorityColors[priority],
+                                      backgroundColor:
+                                        priorityColors[priority],
                                       fontWeight: "bold",
                                     }}
                                     onClick={() =>
@@ -340,7 +319,17 @@ const Summary = () => {
       <Header />
       <Grid container>
         <Sidebar clickedIcon={clickedIcon} setClickedIcon={setClickedIcon} />
-        {renderContent()}
+        {error ? (
+          <Typography
+            variant="h5"
+            color="error"
+            style={{ paddingLeft: "35%", paddingTop: "5%" }}
+          >
+            {error}
+          </Typography>
+        ) : (
+          renderContent()
+        )}
       </Grid>
     </div>
   );
