@@ -15,12 +15,7 @@ import Header from "../Utils/Header";
 import Sidebar from "../Utils/Sidebar";
 import ActionPlan from "./ActionPlan";
 import CurrentLevels from "./CurrentLevels";
-import {
-  initialPriorityColors,
-  initialStockColors,
-  priorityColors as importedPriorityColors,
-  stockColors as importedStockColors,
-} from "../constants";
+import { colors } from "../Constants/colors";
 
 const Summary = () => {
   const [clickedIcon, setClickedIcon] = useState("summary");
@@ -38,69 +33,63 @@ const Summary = () => {
   });
   const [materialList, setMaterialList] = useState([]);
   const [itemsData, setItemsData] = useState([]);
-  const [priorityColors, setPriorityColors] = useState(initialPriorityColors);
-  const [stockColors, setStockColors] = useState(initialStockColors);
   const [actionPlanData, setActionPlanData] = useState([]);
   const [currentLevelsData, setCurrentLevelsData] = useState([]);
   const [error, setError] = useState(null);
+  const [priorityColors, setPriorityColors] = useState({});
+  const [stockColors, setStockColors] = useState({});
+  const [clickedPriority, setClickedPriority] = useState(null);
+  const [clickedCategory, setClickedCategory] = useState(null);
+  const [priorityCounts, setPriorityCounts] = useState({});
+  const [stockCounts, setStockCounts] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        //TODO Client name should be dynamic-will be done post subdomain redirection
         const response = await fetch(
-          `${process.env.REACT_APP_URL}?client_name=Abhilaksh Misra` //TO DO
+          `${process.env.REACT_APP_URL}?client_name=Abhilaksh Misra`
         );
+
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
+
         const data = await response.json();
+        const priorityCounts = data.reduce((counts, item) => {
+          counts[item.Priority] = (counts[item.Priority] || 0) + 1;
+          return counts;
+        }, {});
+
+        const stockCounts = data.reduce((counts, item) => {
+          counts[item["Current Stock Category"]] =
+            (counts[item["Current Stock Category"]] || 0) + 1;
+          return counts;
+        }, {});
+
         setItemsData(data);
-        calculatePriorityPercentages(data);
-        calculateStockPercentages(data);
-        setActionPlanData(data);
+        setPriorityPercentages(
+          calculatePercentages(priorityCounts, data.length)
+        );
+        setStockPercentages(calculatePercentages(stockCounts, data.length));
+        setPriorityCounts(priorityCounts);
+        setStockCounts(stockCounts);
         setCurrentLevelsData(data);
+        setActionPlanData(data);
       } catch (error) {
         setError("Error fetching data. Please try again later.");
       }
     };
+
     fetchData();
   }, []);
 
-  const calculatePriorityPercentages = (data) => {
-    const totalItems = data.length;
-    const priorityCounts = data.reduce((counts, item) => {
-      counts[item.Priority] = (counts[item.Priority] || 0) + 1;
-      return counts;
-    }, {});
-
+  const calculatePercentages = (counts, totalItems) => {
     const percentages = {};
-    for (const priority in priorityCounts) {
-      percentages[priority] = (
-        (priorityCounts[priority] / totalItems) *
-        100
-      ).toFixed(2);
+    for (const key in counts) {
+      percentages[key] = ((counts[key] / totalItems) * 100).toFixed(2);
     }
-
-    setPriorityPercentages(percentages);
-  };
-
-  const calculateStockPercentages = (data) => {
-    const totalItems = data.length;
-    const stockCounts = data.reduce((counts, item) => {
-      counts[item["Current Stock Category"]] =
-        (counts[item["Current Stock Category"]] || 0) + 1;
-      return counts;
-    }, {});
-
-    const percentages = {};
-    for (const category in stockCounts) {
-      percentages[category] = (
-        (stockCounts[category] / totalItems) *
-        100
-      ).toFixed(2);
-    }
-
-    setStockPercentages(percentages);
+    return percentages;
   };
 
   const handlePriorityClick = (priority) => {
@@ -109,10 +98,12 @@ const Summary = () => {
     );
     const materialNames = filteredItems.map((item) => item["Item name"]);
     setMaterialList(materialNames);
+    setClickedPriority(priority);
+    setClickedCategory(null);
 
     const newPriorityColors = {};
-    for (const key in initialPriorityColors) {
-      newPriorityColors[key] = importedPriorityColors[key];
+    for (const key in priorityPercentages) {
+      newPriorityColors[key] = key === priority ? "black" : colors.Grey;
     }
     setPriorityColors(newPriorityColors);
   };
@@ -123,14 +114,15 @@ const Summary = () => {
     );
     const materialNames = filteredItems.map((item) => item["Item name"]);
     setMaterialList(materialNames);
+    setClickedCategory(category);
+    setClickedPriority(null);
 
     const newStockColors = {};
-    for (const key in initialStockColors) {
-      newStockColors[key] = importedStockColors[key];
+    for (const key in stockPercentages) {
+      newStockColors[key] = key === category ? "black" : colors.Grey;
     }
     setStockColors(newStockColors);
   };
-
 
   const renderContent = () => {
     switch (clickedIcon) {
@@ -148,19 +140,22 @@ const Summary = () => {
               <Grid item xs={12}>
                 <Grid container spacing={0}>
                   <Grid item xs={6} style={{ padding: "5% 0 0 2%" }}>
+                    {/* Current Stock Table */}
                     <TableContainer
                       style={{ marginBottom: "3%", marginTop: "5%" }}
                     >
                       <Table
                         style={{
-                          backgroundColor: "#F0F0F0",
-                          tableLayout: "fixed",
+                          backgroundColor:colors.Light_Grey,
                           width: "100%",
+                          tableLayout: "auto",
                         }}
                       >
                         <TableHead>
                           <TableRow>
-                            <TableCell style={{ fontWeight: "bold" }}>
+                            <TableCell
+                              style={{ fontWeight: "bold", fontSize: 20 }}
+                            >
                               Current Stock Category
                             </TableCell>
                           </TableRow>
@@ -171,45 +166,64 @@ const Summary = () => {
                           }}
                         >
                           <TableBody>
-                            <TableRow>
-                              {Object.entries(stockPercentages).map(
-                                ([category, percentage]) => (
-                                  <TableCell
-                                    key={category}
-                                    style={{
-                                      border: "2px solid black",
-                                      width: `${percentage}%`,
-                                      backgroundColor:
-                                        stockColors[category],
-                                      fontWeight: "bold",
-                                    }}
-                                    onClick={() =>
-                                      handleStockCategoryClick(category)
-                                    }
-                                  >
-                                    <div style={{ width: "100%" }}>
-                                      {category} ({percentage}%)
-                                    </div>
-                                  </TableCell>
-                                )
-                              )}
-                            </TableRow>
+                            {Array.from(
+                              {
+                                length: Math.ceil(
+                                  Object.entries(stockPercentages).length / 3
+                                ),
+                              },
+                              (_, rowIndex) => (
+                                <TableRow key={rowIndex}>
+                                  {Object.entries(stockPercentages)
+                                    .slice(rowIndex * 3, (rowIndex + 1) * 3)
+                                    .map(([category, percentage]) => {
+                                      return (
+                                        <TableCell
+                                          key={category}
+                                          style={{
+                                            border: "2px solid black",
+                                            backgroundColor:
+                                              category === clickedCategory
+                                                ? stockColors[category]
+                                                : colors.Dark_Grey,
+                                            color:
+                                              category === clickedCategory
+                                                ? "white"
+                                                : "black",
+                                            fontWeight: "bold",
+                                            width: `${percentage}%`,
+                                            textAlign: "center",
+                                          }}
+                                          onClick={() =>
+                                            handleStockCategoryClick(category)
+                                          }
+                                        >
+                                          {category} ({stockCounts[category]})
+                                        </TableCell>
+                                      );
+                                    })}
+                                </TableRow>
+                              )
+                            )}
                           </TableBody>
                         </Box>
                       </Table>
                     </TableContainer>
 
+                    {/* Priority Table */}
                     <TableContainer style={{ marginBottom: "20px" }}>
                       <Table
                         style={{
-                          backgroundColor: "#F0F0F0",
+                          backgroundColor: colors.Light_Grey,
                           tableLayout: "fixed",
                           width: "100%",
                         }}
                       >
                         <TableHead>
                           <TableRow>
-                            <TableCell style={{ fontWeight: "bold" }}>
+                            <TableCell
+                              style={{ fontWeight: "bold", fontSize: 20 }}
+                            >
                               Priority
                             </TableCell>
                           </TableRow>
@@ -229,14 +243,20 @@ const Summary = () => {
                                       border: "2px solid black",
                                       width: `${percentage}%`,
                                       backgroundColor:
-                                        priorityColors[priority],
+                                        priority === clickedPriority
+                                          ? priorityColors[priority]
+                                          : colors.Dark_Grey,
+                                      color:
+                                        priority === clickedPriority
+                                          ? "white"
+                                          : "black",
                                       fontWeight: "bold",
                                     }}
                                     onClick={() =>
                                       handlePriorityClick(priority)
                                     }
                                   >
-                                    {priority} ({percentage}%)
+                                    {priority} ({priorityCounts[priority]})
                                   </TableCell>
                                 )
                               )}
@@ -256,10 +276,11 @@ const Summary = () => {
                       maxHeight: "97vh",
                     }}
                   >
+                    {/* Material List */}
                     <TableContainer style={{ marginBottom: "20px" }}>
                       <Table
                         style={{
-                          backgroundColor: "#F0F0F0",
+                          backgroundColor: colors.Light_Grey,
                           tableLayout: "fixed",
                           width: "100%",
                           marginTop: "30px",
@@ -268,7 +289,11 @@ const Summary = () => {
                         <TableHead>
                           <TableRow>
                             <TableCell
-                              style={{ fontWeight: "bold", width: "33.33%" }}
+                              style={{
+                                fontWeight: "bold",
+                                width: "33.33%",
+                                fontSize: 20,
+                              }}
                             >
                               Material List
                             </TableCell>
@@ -281,7 +306,7 @@ const Summary = () => {
                                 style={{
                                   fontWeight: "bold",
                                   width: "33.33%",
-                                  backgroundColor: "#D3D3D3",
+                                  backgroundColor: colors.Dark_Grey,
                                   textAlign: "center",
                                 }}
                               >
@@ -293,7 +318,7 @@ const Summary = () => {
                                 <TableCell
                                   style={{
                                     width: "40%",
-                                    backgroundColor: "#D3D3D3",
+                                    backgroundColor: colors.Dark_Grey,
                                     textAlign: "center",
                                   }}
                                 >
