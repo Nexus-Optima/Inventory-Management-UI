@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
 import "../styles.css";
-import {colors} from "../Constants/colors";
+import { colors } from "../Constants/colors";
 
 const CurrentLevels = ({ currentLevelsData }) => {
   const [page, setPage] = useState(1);
@@ -24,19 +24,15 @@ const CurrentLevels = ({ currentLevelsData }) => {
   };
 
   return (
-    <Container
-      maxWidth={false}
-      style={{ marginLeft: "10%", paddingRight: "2%" }}
-    >
+    <Container maxWidth={false} style={{ marginLeft: "10%", paddingRight: "2%" }}>
       <Grid container>
         <Grid item xs={12}>
           <Grid container spacing={0}>
-            <Grid item xs={11} style={{ padding: "5% 0 0 5%" }}>
+            <Grid item xs={12} md={11} style={{ padding: "5% 0 0 5%" }}>
               <TableContainer
                 style={{
                   marginBottom: "2%",
                   marginTop: "3%",
-                  maxHeight: "70vh",
                   overflowY: "auto",
                 }}
               >
@@ -63,9 +59,7 @@ const CurrentLevels = ({ currentLevelsData }) => {
                         Current Levels
                       </TableCell>
                     </TableRow>
-                    <TableRow
-                      style={{ position: "sticky", top: 56, zIndex: 1 }}
-                    >
+                    <TableRow style={{ position: "sticky", top: 56, zIndex: 1 }}>
                       <TableCell
                         style={{
                           fontWeight: "bold",
@@ -164,7 +158,9 @@ const CurrentLevels = ({ currentLevelsData }) => {
                           key={index}
                           style={{
                             backgroundColor:
-                              index % 2 === 0 ? colors.Light_Grey : colors.Dark_Grey,
+                              index % 2 === 0
+                                ? colors.Light_Grey
+                                : colors.Dark_Grey,
                           }}
                         >
                           <TableCell style={{ padding: "1.5vw" }}>
@@ -194,8 +190,8 @@ const CurrentLevels = ({ currentLevelsData }) => {
                                 <div>
                                   <div>Lead Days: {row["Lead days"]} Units</div>
                                   <div>
-                                    Processing Days: {row["Processing days"]}{" "}
-                                    Units
+                                    Processing Days:{" "}
+                                    {row["Processing days"]} Units
                                   </div>
                                   <div>
                                     Daily Consumption:{" "}
@@ -214,7 +210,7 @@ const CurrentLevels = ({ currentLevelsData }) => {
                   </TableBody>
                 </Table>
               </TableContainer>
-              <div style={{ textAlign: "center", marginBottom: "20px" }}>
+              <div style={{ textAlign: "center", marginBottom: "20px",fontWeight:"bold" }}>
                 <div>
                   Page {page} of{" "}
                   {Math.ceil(currentLevelsData.length / rowsPerPage)}
@@ -228,7 +224,8 @@ const CurrentLevels = ({ currentLevelsData }) => {
                 </IconButton>
                 <IconButton
                   disabled={
-                    page >= Math.ceil(currentLevelsData.length / rowsPerPage)
+                    page >=
+                    Math.ceil(currentLevelsData.length / rowsPerPage)
                   }
                   onClick={() => handleChangePage(page + 1)}
                   style={{ position: "absolute", right: "8.5%" }}

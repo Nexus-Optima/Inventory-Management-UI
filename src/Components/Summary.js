@@ -300,7 +300,7 @@ const Summary = () => {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          <Box sx={{ paddingLeft: 1.5, paddingTop: 1 }}>
+                          <Box sx={{ paddingLeft: 1.5, paddingTop: 1.5,paddingBottom:1.5 }}>
                             <TableRow>
                               <TableCell
                                 style={{
