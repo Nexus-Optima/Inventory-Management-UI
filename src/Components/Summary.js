@@ -17,6 +17,7 @@ import ActionPlan from "./ActionPlan";
 import CurrentLevels from "./CurrentLevels";
 import { colors } from "../Constants/colors";
 
+
 const Summary = () => {
   const [clickedIcon, setClickedIcon] = useState("summary");
   const [priorityPercentages, setPriorityPercentages] = useState({
@@ -46,16 +47,20 @@ const Summary = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        //TODO Client name should be dynamic-will be done post subdomain redirection
+        const sessionInfoString = sessionStorage.getItem("sessionInfo");
+        const sessionInfo = sessionInfoString ? JSON.parse(sessionInfoString) : null;
+        // if (!sessionInfo) {
+        //   throw new Error("Session information not found.");
+        // }
         const response = await fetch(
-          `${process.env.REACT_APP_URL}?client_name=Abhilaksh Misra`
+          `${process.env.REACT_APP_URL}?client_name=${sessionInfo.username}`
         );
-
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
         const data = await response.json();
+        console.log(data);
         const priorityCounts = data.reduce((counts, item) => {
           counts[item.Priority] = (counts[item.Priority] || 0) + 1;
           return counts;
