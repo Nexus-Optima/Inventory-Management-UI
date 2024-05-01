@@ -48,10 +48,12 @@ const Summary = () => {
     const fetchData = async () => {
       try {
         const sessionInfoString = sessionStorage.getItem("sessionInfo");
+        console.log(sessionInfoString);
         const sessionInfo = sessionInfoString ? JSON.parse(sessionInfoString) : null;
         // if (!sessionInfo) {
         //   throw new Error("Session information not found.");
         // }
+        console.log(sessionInfo);
         const response = await fetch(
           `${process.env.REACT_APP_URL}?client_name=${sessionInfo.username}`
         );
