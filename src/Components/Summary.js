@@ -47,7 +47,7 @@ const Summary = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const sessionInfoString = sessionStorage.getItem("sessionInfo");
+        const sessionInfoString = localStorage.getItem("sessionInfo");
         console.log(sessionInfoString);
         const sessionInfo = sessionInfoString ? JSON.parse(sessionInfoString) : null;
         // if (!sessionInfo) {
