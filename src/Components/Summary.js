@@ -10,6 +10,7 @@ import {
   TableRow,
   Box,
   Typography,
+  Button,
 } from "@mui/material";
 import Header from "../Utils/Header";
 import Sidebar from "../Utils/Sidebar";
@@ -36,61 +37,61 @@ const Summary = () => {
   const [actionPlanData, setActionPlanData] = useState([]);
   const [currentLevelsData, setCurrentLevelsData] = useState([]);
   const [error, setError] = useState(null);
+  const [unauthorized, setUnauthorized] = useState(null);
   const [priorityColors, setPriorityColors] = useState({});
   const [stockColors, setStockColors] = useState({});
   const [clickedPriority, setClickedPriority] = useState(null);
   const [clickedCategory, setClickedCategory] = useState(null);
   const [priorityCounts, setPriorityCounts] = useState({});
   const [stockCounts, setStockCounts] = useState({});
+  const [mainDomain, setMainDomain] = useState(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // const sessionInfoString = localStorage.getItem("sessionInfo");
-        // const sessionInfo = sessionInfoString ? JSON.parse(sessionInfoString) : null;
-        // if (!sessionInfo) {
-        //   throw new Error("Session information not found.");
-        // }
+    const mainDomain = `${process.env.REACT_APP_MAIN_DOMAIN}`;
+    setMainDomain(mainDomain);
+    if (document.referrer.startsWith(mainDomain)) {
+      const fetchData = async () => {
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const username = params.get("username");
+          const response = await fetch(
+            `${process.env.REACT_APP_URL}?client_name=${username}`
+          );
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
 
-        const params = new URLSearchParams(window.location.search);
-        console.log(params);
-        const username = params.get("username");
-        console.log(username);
-        const response = await fetch(
-          `${process.env.REACT_APP_URL}?client_name=${username}`
-        );
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+          const data = await response.json();
+          console.log(data);
+          const priorityCounts = data.reduce((counts, item) => {
+            counts[item.Priority] = (counts[item.Priority] || 0) + 1;
+            return counts;
+          }, {});
+
+          const stockCounts = data.reduce((counts, item) => {
+            counts[item["Current Stock Category"]] =
+              (counts[item["Current Stock Category"]] || 0) + 1;
+            return counts;
+          }, {});
+
+          setItemsData(data);
+          setPriorityPercentages(
+            calculatePercentages(priorityCounts, data.length)
+          );
+          setStockPercentages(calculatePercentages(stockCounts, data.length));
+          setPriorityCounts(priorityCounts);
+          setStockCounts(stockCounts);
+          setCurrentLevelsData(data);
+          setActionPlanData(data);
+        } catch (error) {
+          setError("Error fetching data. Please try again later.");
         }
+      };
 
-        const data = await response.json();
-        console.log(data);
-        const priorityCounts = data.reduce((counts, item) => {
-          counts[item.Priority] = (counts[item.Priority] || 0) + 1;
-          return counts;
-        }, {});
-
-        const stockCounts = data.reduce((counts, item) => {
-          counts[item["Current Stock Category"]] =
-            (counts[item["Current Stock Category"]] || 0) + 1;
-          return counts;
-        }, {});
-
-        setItemsData(data);
-        setPriorityPercentages(
-          calculatePercentages(priorityCounts, data.length)
-        );
-        setStockPercentages(calculatePercentages(stockCounts, data.length));
-        setPriorityCounts(priorityCounts);
-        setStockCounts(stockCounts);
-        setCurrentLevelsData(data);
-        setActionPlanData(data);
-      } catch (error) {
-        setError("Error fetching data. Please try again later.");
-      }
-    };
-
-    fetchData();
+      fetchData();
+    } else {
+      setUnauthorized("Unauthorized - Access denied.");
+    }
   }, []);
 
   const calculatePercentages = (counts, totalItems) => {
@@ -356,21 +357,46 @@ const Summary = () => {
 
   return (
     <div style={{ overflowX: "hidden", height: "100vh" }}>
-      <Header />
-      <Grid container>
-        <Sidebar clickedIcon={clickedIcon} setClickedIcon={setClickedIcon} />
-        {error ? (
-          <Typography
-            variant="h5"
-            color="error"
-            style={{ paddingLeft: "35%", paddingTop: "5%" }}
-          >
-            {error}
+      {unauthorized ? (
+        <>
+          <Typography variant="h5" color="error" style={{ paddingTop: "5%" }}>
+            {unauthorized}
           </Typography>
-        ) : (
-          renderContent()
-        )}
-      </Grid>
+          <Button
+            variant="contained"
+            color="primary"
+            style={{
+              marginTop: "2%",
+              backgroundColor: "black",
+              color: "white",
+            }}
+            onClick={() => (window.location.href = mainDomain)}
+          >
+            Go back to dashboard
+          </Button>
+        </>
+      ) : (
+        <>
+          <Header />
+          <Grid container>
+            <Sidebar
+              clickedIcon={clickedIcon}
+              setClickedIcon={setClickedIcon}
+            />
+            {error ? (
+              <Typography
+                variant="h5"
+                color="error"
+                style={{ paddingLeft: "35%", paddingTop: "5%" }}
+              >
+                {error}
+              </Typography>
+            ) : (
+              renderContent()
+            )}
+          </Grid>
+        </>
+      )}
     </div>
   );
 };
