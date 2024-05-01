@@ -17,7 +17,6 @@ import ActionPlan from "./ActionPlan";
 import CurrentLevels from "./CurrentLevels";
 import { colors } from "../Constants/colors";
 
-
 const Summary = () => {
   const [clickedIcon, setClickedIcon] = useState("summary");
   const [priorityPercentages, setPriorityPercentages] = useState({
@@ -47,15 +46,18 @@ const Summary = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const sessionInfoString = localStorage.getItem("sessionInfo");
-        console.log(sessionInfoString);
-        const sessionInfo = sessionInfoString ? JSON.parse(sessionInfoString) : null;
+        // const sessionInfoString = localStorage.getItem("sessionInfo");
+        // const sessionInfo = sessionInfoString ? JSON.parse(sessionInfoString) : null;
         // if (!sessionInfo) {
         //   throw new Error("Session information not found.");
         // }
-        console.log(sessionInfo);
+
+        const params = new URLSearchParams(window.location.search);
+        console.log(params);
+        const username = params.get("username");
+        console.log(username);
         const response = await fetch(
-          `${process.env.REACT_APP_URL}?client_name=${sessionInfo.username}`
+          `${process.env.REACT_APP_URL}?client_name=${username}`
         );
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -153,7 +155,7 @@ const Summary = () => {
                     >
                       <Table
                         style={{
-                          backgroundColor:colors.Light_Grey,
+                          backgroundColor: colors.Light_Grey,
                           width: "100%",
                           tableLayout: "auto",
                         }}
@@ -307,7 +309,13 @@ const Summary = () => {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          <Box sx={{ paddingLeft: 1.5, paddingTop: 1.5,paddingBottom:1.5 }}>
+                          <Box
+                            sx={{
+                              paddingLeft: 1.5,
+                              paddingTop: 1.5,
+                              paddingBottom: 1.5,
+                            }}
+                          >
                             <TableRow>
                               <TableCell
                                 style={{
