@@ -47,9 +47,9 @@ const Summary = () => {
   const [mainDomain, setMainDomain] = useState(null);
 
   useEffect(() => {
-    const mainDomain = `${process.env.REACT_APP_MAIN_DOMAIN}`;
-    setMainDomain(mainDomain);
-    if (document.referrer.startsWith(mainDomain)) {
+    // const mainDomain = `${process.env.REACT_APP_MAIN_DOMAIN}`;
+    // setMainDomain(mainDomain);
+    // if (document.referrer.startsWith(mainDomain)) {
       const fetchData = async () => {
         try {
           const params = new URLSearchParams(window.location.search);
@@ -89,9 +89,9 @@ const Summary = () => {
       };
 
       fetchData();
-    } else {
-      setUnauthorized("Unauthorized - Access denied.");
-    }
+    // } else {
+    //   setUnauthorized("Unauthorized - Access denied.");
+    // }
   }, []);
 
   const calculatePercentages = (counts, totalItems) => {
