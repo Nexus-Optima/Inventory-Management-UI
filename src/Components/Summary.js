@@ -17,6 +17,18 @@ import Sidebar from "../Utils/Sidebar";
 import ActionPlan from "./ActionPlan";
 import CurrentLevels from "./CurrentLevels";
 import { colors } from "../Constants/colors";
+import CryptoJS from "crypto-js";
+
+const decryptData = (encryptedData, secretKey,setError) => {
+  try {
+    const cleanedEncryptedData = encryptedData.replace(/\s/g, "+");
+    const bytes = CryptoJS.AES.decrypt(cleanedEncryptedData, secretKey);
+    const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
+    return JSON.parse(decryptedData);
+  } catch (error) {
+    setError("Error decrypting data");
+  }
+};
 
 const Summary = () => {
   const [clickedIcon, setClickedIcon] = useState("summary");
@@ -50,17 +62,21 @@ const Summary = () => {
     const mainDomain = `${process.env.REACT_APP_MAIN_DOMAIN}`;
     setMainDomain(mainDomain);
     if (document.referrer.startsWith(mainDomain)) {
+      const params = new URLSearchParams(window.location.search);
+      const encryptedData = decodeURIComponent(params.get("data"));
+      const secretKey = process.env.REACT_APP_SECRET_KEY;
+      const decryptedData = decryptData(encryptedData.toString(), secretKey,setError);
+      const clientName = decryptedData.username;
+      const fetchUrl = `${
+        process.env.REACT_APP_URL
+      }?client_name=${encodeURIComponent(clientName)}`;
+
       const fetchData = async () => {
         try {
-          const params = new URLSearchParams(window.location.search);
-          const username = params.get("username");
-          const response = await fetch(
-            `${process.env.REACT_APP_URL}?client_name=${username}`
-          );
+          const response = await fetch(fetchUrl);
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
-
           const data = await response.json();
           console.log(data);
           const priorityCounts = data.reduce((counts, item) => {
